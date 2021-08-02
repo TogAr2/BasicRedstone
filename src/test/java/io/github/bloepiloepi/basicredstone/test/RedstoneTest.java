@@ -1,11 +1,8 @@
 package io.github.bloepiloepi.basicredstone.test;
 
-import io.github.bloepiloepi.basicredstone.door.Doors;
-import io.github.bloepiloepi.basicredstone.door.Trapdoors;
+import io.github.bloepiloepi.basicredstone.BasicRedstoneExtension;
 import io.github.bloepiloepi.basicredstone.redstone.PowerNet;
 import io.github.bloepiloepi.basicredstone.redstone.Redstone;
-import io.github.bloepiloepi.basicredstone.redstone.sources.Buttons;
-import io.github.bloepiloepi.basicredstone.redstone.sources.Lever;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
@@ -35,11 +32,7 @@ public class RedstoneTest {
 		
 		GlobalEventHandler eventHandler = MinecraftServer.getGlobalEventHandler();
 		
-		eventHandler.addChild(Doors.events());
-		eventHandler.addChild(Trapdoors.events());
-		
-		eventHandler.addChild(Buttons.events());
-		eventHandler.addChild(Lever.events());
+		eventHandler.addChild(BasicRedstoneExtension.events());
 		
 		PowerNet powerNet = Redstone.getPowerNet(instance);
 		powerNet.useAllReactors();
