@@ -1,7 +1,7 @@
 package io.github.bloepiloepi.basicredstone.door;
 
 import io.github.bloepiloepi.basicredstone.redstone.Redstone;
-import io.github.bloepiloepi.basicredstone.redstone.RedstoneReactor;
+import io.github.bloepiloepi.basicredstone.redstone.RedstoneComponent;
 import io.github.bloepiloepi.basicredstone.util.InstanceUtil;
 import io.github.bloepiloepi.basicredstone.util.StateUtil;
 import net.minestom.server.coordinate.Point;
@@ -18,7 +18,7 @@ import net.minestom.server.instance.block.BlockFace;
 import org.jetbrains.annotations.Nullable;
 
 public class Doors {
-	public static final RedstoneReactor DOOR_REACTOR = new RedstoneReactor() {
+	public static final RedstoneComponent DOOR_COMPONENT = new RedstoneComponent() {
 		@Override
 		public boolean is(Block block) {
 			return isDoor(block);

@@ -1,6 +1,6 @@
 package io.github.bloepiloepi.basicredstone.door;
 
-import io.github.bloepiloepi.basicredstone.redstone.RedstoneReactor;
+import io.github.bloepiloepi.basicredstone.redstone.RedstoneComponent;
 import io.github.bloepiloepi.basicredstone.util.InstanceUtil;
 import io.github.bloepiloepi.basicredstone.util.StateUtil;
 import net.minestom.server.coordinate.Point;
@@ -16,7 +16,7 @@ import net.minestom.server.instance.block.Block;
 import org.jetbrains.annotations.Nullable;
 
 public class Trapdoors {
-	public static final RedstoneReactor TRAPDOOR_REACTOR = new RedstoneReactor() {
+	public static final RedstoneComponent TRAPDOOR_COMPONENT = new RedstoneComponent() {
 		@Override
 		public boolean is(Block block) {
 			return isTrapdoor(block);

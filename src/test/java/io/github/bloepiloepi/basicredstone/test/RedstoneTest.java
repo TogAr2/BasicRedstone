@@ -35,7 +35,7 @@ public class RedstoneTest {
 		eventHandler.addChild(BasicRedstoneExtension.events());
 		
 		PowerNet powerNet = Redstone.getPowerNet(instance);
-		powerNet.useAllReactors();
+		powerNet.useBuiltinComponents();
 		
 		OpenToLAN.open();
 		

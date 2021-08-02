@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class PowerNet {
 	private final Instance instance;
 	private final Object lock = new Object();
-	private final List<RedstoneReactor> reactors = new ArrayList<>();
+	private final List<RedstoneComponent> components = new ArrayList<>();
 	private final Set<Point> poweredPoints = new HashSet<>();
 	private final Set<Point> indirectPowerPoints = new HashSet<>();
 	
@@ -30,17 +30,17 @@ public class PowerNet {
 		this.instance = instance;
 	}
 	
-	public void useAllReactors() {
-		useReactor(Doors.DOOR_REACTOR);
-		useReactor(Trapdoors.TRAPDOOR_REACTOR);
+	public void useBuiltinComponents() {
+		useComponents(Doors.DOOR_COMPONENT);
+		useComponents(Trapdoors.TRAPDOOR_COMPONENT);
 	}
 	
-	public void useReactor(RedstoneReactor reactor) {
-		reactors.add(reactor);
+	public void useComponents(RedstoneComponent reactor) {
+		components.add(reactor);
 	}
 	
-	private Set<RedstoneReactor> findReactors(Block block) {
-		return reactors.stream().filter(reactor -> reactor.is(block)).collect(Collectors.toSet());
+	private Set<RedstoneComponent> findComponents(Block block) {
+		return components.stream().filter(reactor -> reactor.is(block)).collect(Collectors.toSet());
 	}
 	
 	private void forEachSide(Point position, BiConsumer<Point, Block> consumer) {
@@ -113,13 +113,13 @@ public class PowerNet {
 			
 			// Power the position itself as well
 			Block middleBlock = instance.getBlock(position);
-			findReactors(middleBlock).forEach(reactor -> reactor.onPower(instance, position, middleBlock));
+			findComponents(middleBlock).forEach(reactor -> reactor.onPower(instance, position, middleBlock));
 			
 			forEachSide(position, (blockPos, block) -> {
 				if (hasPower(blockPos)) return;
 				indirectPowerPoints.add(blockPos);
 				
-				findReactors(block).forEach(reactor -> reactor.onPower(instance, blockPos, block));
+				findComponents(block).forEach(reactor -> reactor.onPower(instance, blockPos, block));
 			});
 			
 			poweredPoints.add(position);
@@ -134,7 +134,7 @@ public class PowerNet {
 			// Un-power the position itself as well
 			if (shouldNotBePowered(position)) {
 				Block block = instance.getBlock(position);
-				findReactors(block).forEach(reactor -> reactor.onLosePower(instance, position, block));
+				findComponents(block).forEach(reactor -> reactor.onLosePower(instance, position, block));
 			} else {
 				if (!hasPower(position)) {
 					indirectPowerPoints.add(position);
@@ -144,7 +144,7 @@ public class PowerNet {
 			forEachSide(position, (blockPos, block) -> {
 				if (shouldNotBePowered(blockPos)) {
 					indirectPowerPoints.remove(blockPos);
-					findReactors(block).forEach(reactor -> reactor.onLosePower(instance, blockPos, block));
+					findComponents(block).forEach(reactor -> reactor.onLosePower(instance, blockPos, block));
 				} else {
 					if (!hasPower(blockPos)) {
 						indirectPowerPoints.add(blockPos);
