@@ -35,7 +35,7 @@ public class Lever {
 	}
 	
 	public static EventNode<EntityEvent> events() {
-		EventNode<EntityEvent> node = EventNode.type("button-events", EventFilter.ENTITY);
+		EventNode<EntityEvent> node = EventNode.type("lever-events", EventFilter.ENTITY);
 		
 		node.addListener(EventListener.builder(PlayerBlockInteractEvent.class).handler(event -> {
 			if (event.getPlayer().isSneaking() && event.getPlayer()

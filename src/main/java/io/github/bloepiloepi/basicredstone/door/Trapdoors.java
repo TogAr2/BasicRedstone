@@ -89,7 +89,7 @@ public class Trapdoors {
 	}
 	
 	public static EventNode<EntityEvent> events() {
-		EventNode<EntityEvent> node = EventNode.type("door-events", EventFilter.ENTITY);
+		EventNode<EntityEvent> node = EventNode.type("trapdoor-events", EventFilter.ENTITY);
 		
 		node.addListener(EventListener.builder(PlayerBlockInteractEvent.class).handler(event -> {
 			if (event.getPlayer().isSneaking() && event.getPlayer()

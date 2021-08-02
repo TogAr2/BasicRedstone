@@ -14,8 +14,14 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
+/**
+ * Every instance has a PowerNet which contains information about the power of blocks.
+ *
+ * @see io.github.bloepiloepi.basicredstone.redstone.Redstone
+ */
 public class PowerNet {
 	private final Instance instance;
+	private final Object lock = new Object();
 	private final List<RedstoneReactor> reactors = new ArrayList<>();
 	private final Set<Point> poweredPoints = new HashSet<>();
 	private final Set<Point> indirectPowerPoints = new HashSet<>();
@@ -33,11 +39,11 @@ public class PowerNet {
 		reactors.add(reactor);
 	}
 	
-	public Set<RedstoneReactor> findReactors(Block block) {
+	private Set<RedstoneReactor> findReactors(Block block) {
 		return reactors.stream().filter(reactor -> reactor.is(block)).collect(Collectors.toSet());
 	}
 	
-	public void forEachSide(Point position, BiConsumer<Point, Block> consumer) {
+	private void forEachSide(Point position, BiConsumer<Point, Block> consumer) {
 		for (BlockFace face : BlockFace.values()) {
 			Point blockPos = position.relative(face);
 			Block block = instance.getBlock(blockPos);
@@ -47,7 +53,9 @@ public class PowerNet {
 	}
 	
 	public boolean hasPower(Point position) {
-		return poweredPoints.contains(position) || indirectPowerPoints.contains(position);
+		synchronized (lock) {
+			return poweredPoints.contains(position) || indirectPowerPoints.contains(position);
+		}
 	}
 	
 	private boolean shouldNotBePowered(Point position) {
@@ -100,46 +108,50 @@ public class PowerNet {
 	}
 	
 	public void power(Point position) {
-		if (poweredPoints.contains(position)) return;
-		
-		// Power the position itself as well
-		Block middleBlock = instance.getBlock(position);
-		findReactors(middleBlock).forEach(reactor -> reactor.onPower(instance, position, middleBlock));
-		
-		forEachSide(position, (blockPos, block) -> {
-			if (hasPower(blockPos)) return;
-			indirectPowerPoints.add(blockPos);
+		synchronized (lock) {
+			if (poweredPoints.contains(position)) return;
 			
-			findReactors(block).forEach(reactor -> reactor.onPower(instance, blockPos, block));
-		});
-		
-		poweredPoints.add(position);
-		indirectPowerPoints.remove(position);
+			// Power the position itself as well
+			Block middleBlock = instance.getBlock(position);
+			findReactors(middleBlock).forEach(reactor -> reactor.onPower(instance, position, middleBlock));
+			
+			forEachSide(position, (blockPos, block) -> {
+				if (hasPower(blockPos)) return;
+				indirectPowerPoints.add(blockPos);
+				
+				findReactors(block).forEach(reactor -> reactor.onPower(instance, blockPos, block));
+			});
+			
+			poweredPoints.add(position);
+			indirectPowerPoints.remove(position);
+		}
 	}
 	
 	public void losePower(Point position) {
-		if (!poweredPoints.remove(position)) return;
-		
-		// Un-power the position itself as well
-		if (shouldNotBePowered(position)) {
-			Block block = instance.getBlock(position);
-			findReactors(block).forEach(reactor -> reactor.onLosePower(instance, position, block));
-		} else {
-			if (!hasPower(position)) {
-				indirectPowerPoints.add(position);
-			}
-		}
-		
-		forEachSide(position, (blockPos, block) -> {
-			if (shouldNotBePowered(blockPos)) {
-				indirectPowerPoints.remove(blockPos);
-				findReactors(block).forEach(reactor -> reactor.onLosePower(instance, blockPos, block));
+		synchronized (lock) {
+			if (!poweredPoints.remove(position)) return;
+			
+			// Un-power the position itself as well
+			if (shouldNotBePowered(position)) {
+				Block block = instance.getBlock(position);
+				findReactors(block).forEach(reactor -> reactor.onLosePower(instance, position, block));
 			} else {
-				if (!hasPower(blockPos)) {
-					indirectPowerPoints.add(blockPos);
+				if (!hasPower(position)) {
+					indirectPowerPoints.add(position);
 				}
 			}
-		});
+			
+			forEachSide(position, (blockPos, block) -> {
+				if (shouldNotBePowered(blockPos)) {
+					indirectPowerPoints.remove(blockPos);
+					findReactors(block).forEach(reactor -> reactor.onLosePower(instance, blockPos, block));
+				} else {
+					if (!hasPower(blockPos)) {
+						indirectPowerPoints.add(blockPos);
+					}
+				}
+			});
+		}
 	}
 	
 	@Override

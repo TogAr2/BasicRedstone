@@ -2,7 +2,6 @@ package io.github.bloepiloepi.basicredstone.redstone.sources;
 
 import io.github.bloepiloepi.basicredstone.redstone.PowerNet;
 import io.github.bloepiloepi.basicredstone.redstone.Redstone;
-import io.github.bloepiloepi.basicredstone.util.AttachFace;
 import io.github.bloepiloepi.basicredstone.util.InstanceUtil;
 import io.github.bloepiloepi.basicredstone.util.StateUtil;
 import it.unimi.dsi.fastutil.Pair;
@@ -18,7 +17,6 @@ import net.minestom.server.event.player.PlayerBlockInteractEvent;
 import net.minestom.server.event.trait.EntityEvent;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.block.Block;
-import net.minestom.server.instance.block.BlockFace;
 import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.utils.time.TimeUnit;
 import org.jetbrains.annotations.Nullable;
