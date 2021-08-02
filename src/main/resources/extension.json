@@ -1,0 +1,6 @@
+{
+  "entrypoint": "io.github.bloepiloepi.basicredstone.BasicRedstoneExtension",
+  "name": "BasicRedstone",
+  "mixinConfig": "mixins.extension.json",
+  "version": "1"
+}

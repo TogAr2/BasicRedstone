@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group 'io.github.bloepiloepi'
+version '1.0'
+
+sourceCompatibility = "11"
+
+repositories {
+    mavenCentral()
+
+    maven { url 'https://repo.spongepowered.org/maven' }
+    maven { url 'https://repo.velocitypowered.com/snapshots/' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://repo.minestom.net/repository/maven-public/' }
+}
+
+dependencies {
+    compileOnly 'com.github.Minestom:Minestom:515b5358da'
+    testImplementation 'com.github.Minestom:Minestom:515b5358da'
+}
