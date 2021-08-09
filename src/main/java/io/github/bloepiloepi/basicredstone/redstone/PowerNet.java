@@ -28,15 +28,20 @@ public class PowerNet {
 	
 	public PowerNet(Instance instance) {
 		this.instance = instance;
+		useBuiltinComponents();
 	}
 	
-	public void useBuiltinComponents() {
-		useComponents(Doors.DOOR_COMPONENT);
-		useComponents(Trapdoors.TRAPDOOR_COMPONENT);
+	private void useBuiltinComponents() {
+		useComponent(Doors.DOOR_COMPONENT);
+		useComponent(Trapdoors.TRAPDOOR_COMPONENT);
 	}
 	
-	public void useComponents(RedstoneComponent reactor) {
-		components.add(reactor);
+	public void useComponent(RedstoneComponent component) {
+		components.add(component);
+	}
+	
+	public void removeComponent(RedstoneComponent component) {
+		components.remove(component);
 	}
 	
 	private Set<RedstoneComponent> findComponents(Block block) {

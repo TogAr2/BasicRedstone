@@ -10,66 +10,25 @@ import net.minestom.server.event.trait.EntityEvent;
 import net.minestom.server.extensions.Extension;
 
 public class BasicRedstoneExtension extends Extension {
+	public static final EventNode<EntityEvent> REDSTONE_EVENTS = events();
 	
-	/**
-	 * Creates an EventNode with all the builtin redstone events listening.
-	 *
-	 * @return The EventNode
-	 */
-	public static EventNode<EntityEvent> events() {
+	private static EventNode<EntityEvent> events() {
 		EventNode<EntityEvent> node = EventNode.type("redstone-events", EventFilter.ENTITY);
 		
-		node.addChild(buttonEvents());
-		node.addChild(leverEvents());
-		node.addChild(doorEvents());
-		node.addChild(trapdoorEvents());
+		node.addChild(Buttons.events());
+		node.addChild(Lever.events());
+		node.addChild(Doors.events());
+		node.addChild(Trapdoors.events());
 		
 		return node;
 	}
 	
-	/**
-	 * Creates an EventNode with the events for button pressing and breaking listening.
-	 *
-	 * @return The EventNode
-	 */
-	public static EventNode<EntityEvent> buttonEvents() {
-		return Buttons.events();
-	}
-	
-	/**
-	 * Creates an EventNode with the events for lever pulling and breaking listening.
-	 *
-	 * @return The EventNode
-	 */
-	public static EventNode<EntityEvent> leverEvents() {
-		return Lever.events();
-	}
-	
-	/**
-	 * Creates an EventNode with the events for manual (no redstone) door interaction listening.
-	 *
-	 * @return The EventNode
-	 */
-	public static EventNode<EntityEvent> doorEvents() {
-		return Doors.events();
-	}
-	
-	/**
-	 * Creates an EventNode with the events for manual (no redstone) trapdoor interaction listening.
-	 *
-	 * @return The EventNode
-	 */
-	public static EventNode<EntityEvent> trapdoorEvents() {
-		return Trapdoors.events();
-	}
-	
 	@Override
 	public void initialize() {
-	
+		getEventNode().addChild(REDSTONE_EVENTS);
 	}
 	
 	@Override
 	public void terminate() {
-	
 	}
 }

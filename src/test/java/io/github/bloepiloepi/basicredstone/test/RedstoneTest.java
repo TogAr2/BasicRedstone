@@ -30,13 +30,6 @@ public class RedstoneTest {
 		
 		MinecraftServer.getCommandManager().register(new NetCommand());
 		
-		GlobalEventHandler eventHandler = MinecraftServer.getGlobalEventHandler();
-		
-		eventHandler.addChild(BasicRedstoneExtension.events());
-		
-		PowerNet powerNet = Redstone.getPowerNet(instance);
-		powerNet.useBuiltinComponents();
-		
 		OpenToLAN.open();
 		
 		server.start("localhost", 25565);

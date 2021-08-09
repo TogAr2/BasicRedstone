@@ -34,6 +34,11 @@ public class Lever {
 				Sound.Source.BLOCK, 0.3F, power ? 0.6F : 0.5F));
 	}
 	
+	/**
+	 * Creates an EventNode with the events for lever pulling and breaking listening.
+	 *
+	 * @return The EventNode
+	 */
 	public static EventNode<EntityEvent> events() {
 		EventNode<EntityEvent> node = EventNode.type("lever-events", EventFilter.ENTITY);
 		

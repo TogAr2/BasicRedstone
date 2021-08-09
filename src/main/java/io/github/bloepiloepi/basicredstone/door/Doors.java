@@ -108,6 +108,11 @@ public class Doors {
 		}
 	}
 	
+	/**
+	 * Creates an EventNode with the events for manual (no redstone) door interaction listening.
+	 *
+	 * @return The EventNode
+	 */
 	public static EventNode<EntityEvent> events() {
 		EventNode<EntityEvent> node = EventNode.type("door-events", EventFilter.ENTITY);
 		

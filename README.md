@@ -29,37 +29,33 @@ This may change in the future.
 
 ## Usage
 
-To use this extension, you can either build a jar file
-and put it in your extensions folder, or shade it as a library in your server.
+To use this extension, you can either use the jar file
+and put it in your extensions folder, or shade it as a library in your server
+(in which case you have to add the events, see below).
 
-The extension will not work by itself, you have to enable separate features.
+### Using the events
 
-### Enabling events
+To use the events, add `BasicRedstoneExtension.REDSTONE_EVENTS` as a child to any `EventNode` you want.
 
-You can get an `EventNode` with all events listening by using `BasicRedstoneExtension.events()`.
-You can add this node as a child to any other node, and the redstone will work in the scope.
-You can also get a node with separated events of this extension.
-
-`buttonEvents()` creates an EventNode with the events for button pressing and breaking.
-
-`leverEvents()` creates an EventNode with the events for lever pulling and breaking.
-
-`doorEvents()` creates an EventNode with the events for manual (no redstone) door interaction.
-
-`trapdoorEvents()` creates an EventNode with the events for manual (no redstone) trapdoor interaction.
+This only applies when you use it as a library instead of an extension.
 
 ### Using redstone components
 
-For every new instance created, you have to specify which redstone components to use in this instance.
+For every new instance, you can specify which redstone components to use in this instance.
 
 For example:
 ```java
 Instance instance;
+RedstoneComponent component;
 PowerNet powerNet = Redstone.getPowerNet(instance);
-powerNet.useBuiltinComponents();
+powerNet.useComponent(component);
 ```
 
-`useBuiltinComponents()` will add doors and trapdoors to the instance.
+Doors and trapdoors are added by default, but if you don't want them, they can be removed like this:
+```java
+powerNet.removeComponent(Doors.DOOR_COMPONENT);
+powerNet.removeComponent(Trapdoors.TRAPDOOR_COMPONENT);
+```
 
 ## Customization
 

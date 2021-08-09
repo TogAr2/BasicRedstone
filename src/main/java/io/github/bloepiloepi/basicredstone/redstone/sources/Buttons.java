@@ -124,6 +124,11 @@ public class Buttons {
 		powerNet.setPower(position.relative(StateUtil.getConnectedBlockFace(block).getOppositeFace()), power);
 	}
 	
+	/**
+	 * Creates an EventNode with the events for button pressing and breaking listening.
+	 *
+	 * @return The EventNode
+	 */
 	public static EventNode<EntityEvent> events() {
 		EventNode<EntityEvent> node = EventNode.type("button-events", EventFilter.ENTITY);
 		

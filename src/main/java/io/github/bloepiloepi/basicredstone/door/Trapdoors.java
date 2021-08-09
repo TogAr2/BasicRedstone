@@ -88,6 +88,11 @@ public class Trapdoors {
 		}
 	}
 	
+	/**
+	 * Creates an EventNode with the events for manual (no redstone) trapdoor interaction listening.
+	 *
+	 * @return The EventNode
+	 */
 	public static EventNode<EntityEvent> events() {
 		EventNode<EntityEvent> node = EventNode.type("trapdoor-events", EventFilter.ENTITY);
 		
